@@ -26,7 +26,7 @@ export default class WorkspaceStatus extends View {
       .when(Boolean(space?.branch), el => el.child(label("branch", space.branch)))
       .child(h_flex().gap(6).items_center().child(div().size(6).rounded(3).bg(t.dim)).child(`${list.length} agents`)
         .when(needs > 0, el => el.child(div().text_color(t.blocked).child(`· ${needs} needs you`))))
-      .child(div().id("caffeinate").px(4).rounded(4).cursor_pointer().text_color(awakeMode === "off" ? t.dim : t.working).hover(el => el.bg(t.hover).text_color(t.foreground)).tooltip(`Caffeinate: ${awakeMode}`).on_click(() => run("mod.open", { name: "caffeinate" })).child("☕"))
+      .child(div().id("caffeinate").px(4).rounded(4).cursor_pointer().text_color(awakeMode === "off" ? t.dim : t.working).hover(el => el.bg(t.hover).text_color(t.foreground)).tooltip(`Caffeinate: ${awakeMode}`).on_click(() => run("mod.open", { name: "caffeinate" })).child("☕︎"))
       .child(div().flex_1())
       .child(div().id("palette").text_color(t.dim).on_click(() => run("app.palette")).child(this.hint(t)));
   }

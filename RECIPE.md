@@ -12,7 +12,7 @@ The coffee cup becomes bright while Caffeinate is on or waiting for working agen
 
 ## How it behaves
 
-Spaces are grouped by machine. Blobatar avatars are downloaded from `blobatar.dev` the first time each space name appears, then saved under `mods/blobatar-spaces/avatars/`. The spaces list reads Git status locally and on connected machines to display repository, branch, and ahead or behind state.
+Spaces are grouped by machine. Each space has a stable, colored initial marker. The spaces list reads Git status locally and on connected machines to display repository, branch, and ahead or behind state.
 
 Agents remain Herdr's shipped list. Working agents appear in the status bar count. The Caffeinate Agent mode polls `hc ls --json` every two seconds. When any agent reports `working`, it runs `/usr/bin/caffeinate -dimsu`. When none report `working`, it stops that process and macOS resumes its normal sleep behavior. On runs `caffeinate` continuously. Off stops only the labelled Core terminal owned by this layout.
 
@@ -32,7 +32,7 @@ The layout calls `mod.open` for Caffeinate. Caffeinate uses `hc get`, `hc run`, 
 
 This layout is for macOS because `/usr/bin/caffeinate` is macOS-specific. The Caffeinate launcher requires `hc` and a live Herdr Core. It persists the selected mode in shared state under `caffeinate.mode`.
 
-The Blobatar Spaces mod reaches `https://blobatar.dev` to download avatar SVGs. It also runs Git status commands in the displayed repositories. The Caffeinate mod runs a local shell script and starts or stops a labelled terminal. Neither mod sends terminal content to a network service.
+The Blobatar Spaces mod runs Git status commands in the displayed repositories. The Caffeinate mod runs a local shell script and starts or stops a labelled terminal. Neither mod sends terminal content to a network service.
 
 The layout depends on Herdr's shipped `agents`, `tabs`, `pane`, `files`, and `changes` mods. Do not rename those references. If a person's installation already has a layout or custom mod with the same name, Herdr's importer must rename the incoming file or folder and every affected `mod` reference.
 

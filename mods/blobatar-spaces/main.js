@@ -5,7 +5,7 @@
 
 import { View, div, svg } from "gpui-kit";
 import { v_flex, h_flex } from "gpui-base";
-import { appHome, readTextFile, writeTextFile, spaces, machines, panes, run, openOverlay, exec, hc, theme, shared, setShared, watchFolder, window, layout } from "herdr";
+import { spaces, machines, panes, run, openOverlay, exec, hc, theme, shared, setShared, watchFolder, window, layout } from "herdr";
 
 function find(node, id) {
   if (node?.id === id) return node;
@@ -35,9 +35,6 @@ const FALLBACK = 60000;
 // What a stored color name looks like on an avatar (the same in every mod
 // that draws space avatars): one strong color per hue, light and dark alike.
 const MARK = { ansi6: "#22a99a", ansi3: "#e3814f", ansi4: "#5b8def", ansi5: "#8b7cf6", ansi2: "#3fae6a", ansi1: "#d9649a" };
-const avatarPath = (name) => `mods/blobatar-spaces/avatars/${encodeURIComponent(name)}.svg`;
-const avatarDiskPath = (name) => `${appHome()}/${avatarPath(name)}`;
-const avatarUrl = (name) => `https://blobatar.dev/avatar/${encodeURIComponent(name)}?size=48&background=none`;
 
 // A space speaks up only when something in it needs you.
 export function glyph(status) {
@@ -68,8 +65,6 @@ export default class Spaces extends View {
     this.reconnecting = JSON.parse(localStorage.getItem("machines.reconnecting") ?? "{}");
     for (const state of Object.values(this.reconnecting)) state.busy = false;
     this.folded = new Set(JSON.parse(localStorage.getItem("machines.folded") ?? "[]"));
-    this.avatars = {};
-    this.syncAvatars(spaces(), cx);
     this.refreshMachines(cx);
     cx.timer.every(15000, cx => this.refreshMachines(cx));
     // `git status` walks the whole tree, on another machine a process there:
@@ -80,31 +75,10 @@ export default class Spaces extends View {
   checkNew(cx) {
     const now = Date.now();
     const sp = spaces();
-    this.syncAvatars(sp, cx);
     for (const s of sp) if (!this.shown.has(s.id)) this.born[s.id] ??= now;
     const due = this.due(now, sp, panes());
     if (due.size) this.refreshGit(due, cx);
     if (sp.some((s) => !this.shown.has(s.id))) cx.notify();
-  }
-
-  syncAvatars(sp, cx) {
-    for (const { name } of sp) {
-      if (this.avatars[name]) continue;
-      this.avatars[name] = "loading";
-      cx.spawn(async (cx) => {
-        try {
-          if (await readTextFile(avatarDiskPath(name)) === null) {
-            const response = await fetch(avatarUrl(name));
-            if (!response.ok) throw new Error(`Blobatar returned ${response.status}`);
-            await writeTextFile(avatarDiskPath(name), await response.text(), null);
-          }
-          this.avatars[name] = "ready";
-        } catch (_) {
-          this.avatars[name] = "failed";
-        }
-        cx.notify();
-      });
-    }
   }
 
   avatar(name, fill) {
