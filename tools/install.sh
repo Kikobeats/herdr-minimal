@@ -68,6 +68,7 @@ copy_layout() {
     if [ "$mod_name" = "blobatar-spaces" ]; then
       mkdir -p "$app_home/mods/$mod_name"
       cp "$root/mods/$mod_name/main.js" "$root/mods/$mod_name/mod.json" "$app_home/mods/$mod_name"
+      mkdir -p "$app_home/mods/$mod_name/avatars"
     else
       cp -R "$root/mods/$mod_name" "$app_home/mods/$mod_name"
     fi

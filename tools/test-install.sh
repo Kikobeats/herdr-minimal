@@ -10,7 +10,7 @@ sh "$root/tools/install.sh" --home "$test_home" install
 test -f "$test_home/layouts/minimal.json"
 test -f "$test_home/mods/caffeinate/main.js"
 test -d "$test_home/mods/workspace-status-awake"
-test ! -e "$test_home/mods/blobatar-spaces/avatars"
+test -d "$test_home/mods/blobatar-spaces/avatars"
 sh "$root/tools/install.sh" --home "$test_home" status
 
 if sh "$root/tools/install.sh" --home; then
