@@ -54,12 +54,12 @@ function findById(node, id) {
   return null;
 }
 
-for (const [mode, expectedColor] of [["off", "dim"], ["on", "working"], ["agent", "working"]]) {
+for (const [mode, expectedColor, expectedIcon] of [["off", "dim", "coffee-off"], ["on", "working", "coffee-on"], ["agent", "working", "coffee-on"]]) {
   const { colors, view } = loadStatus(mode);
   const caffeinate = findById(view.render(), "caffeinate");
   assert.ok(caffeinate, `Caffeinate control should render for ${mode}`);
   assert.equal(caffeinate.props.text_color[0], colors[expectedColor]);
-  assert.equal(caffeinate.children[0].path, "mods/workspace-chrome/pin.svg");
+  assert.equal(caffeinate.children[0].path, `mods/workspace-status-awake/${expectedIcon}.svg`);
 }
 
-console.log("ok: Caffeinate uses one monochrome pin icon with dim Off and working On or Agent colors.");
+console.log("ok: Caffeinate uses an empty coffee cup when off and a steaming cup when on or in Agent mode.");
