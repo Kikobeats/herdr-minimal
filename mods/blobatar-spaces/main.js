@@ -3,7 +3,7 @@
 // its first terminal is in now, only where unusual: branch, ahead/behind. Agent state lives in the agents list, not here. Click to
 // switch, right-click for its menu, drag to reorder.
 
-import { View, div, image, svg } from "gpui-kit";
+import { View, div, svg } from "gpui-kit";
 import { v_flex, h_flex } from "gpui-base";
 import { appHome, readTextFile, writeTextFile, spaces, machines, panes, run, openOverlay, exec, hc, theme, shared, setShared, watchFolder, window, layout } from "herdr";
 
@@ -108,7 +108,6 @@ export default class Spaces extends View {
   }
 
   avatar(name, fill) {
-    if (this.avatars[name] === "ready") return image(avatarPath(name)).size(18);
     return div().w(18).h(18).flex_none().rounded_full().bg(fill).justify_center().items_center().text_size(10).text_color("#000000").child(name.slice(0, 1).toUpperCase());
   }
 

@@ -26,6 +26,8 @@ The sidebar can collapse into a rail. The top-left chrome supplies search and si
 
 The layout calls `mod.open` for Caffeinate. Caffeinate uses `hc get`, `hc run`, and `hc kill` to own a terminal named `herdr-caffeinate` with the label `herdr.caffeinate=true`.
 
+`tools/install.sh` installs the layout into a Herdr home. It supports `install`, `update`, `uninstall`, and `status`, plus `--home PATH` and `--switch`. `tools/test-install.sh` verifies all installer commands against temporary app homes.
+
 ## Watch out
 
 This layout is for macOS because `/usr/bin/caffeinate` is macOS-specific. The Caffeinate launcher requires `hc` and a live Herdr Core. It persists the selected mode in shared state under `caffeinate.mode`.
@@ -34,6 +36,10 @@ The Blobatar Spaces mod reaches `https://blobatar.dev` to download avatar SVGs. 
 
 The layout depends on Herdr's shipped `agents`, `tabs`, `pane`, `files`, and `changes` mods. Do not rename those references. If a person's installation already has a layout or custom mod with the same name, Herdr's importer must rename the incoming file or folder and every affected `mod` reference.
 
+The installer refuses to overwrite an existing target unless a prior Minimal install marker exists. Update and uninstall move their managed files into `.minimal-layout-backups` under the selected Herdr home.
+
 ## Done when
 
 Run `herdr-app check mods/caffeinate` and `herdr-app check mods/workspace-status-awake` successfully. Switch to the `minimal` layout and confirm the bottom coffee cup appears. Click it, select Agent, and confirm the dialog closes. While an agent is working, `hc get --json herdr-caffeinate` reports the `herdr.caffeinate=true` label. Select Off and confirm that command no longer finds the worker.
+
+Run `sh tools/test-install.sh`. It must report a successful install, status, update backup, collision refusal, and uninstall backup.
