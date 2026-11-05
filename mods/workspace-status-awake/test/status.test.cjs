@@ -28,7 +28,11 @@ function loadStatus(mode) {
     View: class {},
     div: element,
     h_flex: element,
-    svg: element,
+    svg: (path) => {
+      const icon = element();
+      icon.path = path;
+      return icon;
+    },
     theme: () => colors,
     spaces: () => [],
     agents: () => [],
@@ -55,7 +59,7 @@ for (const [mode, expectedColor] of [["off", "dim"], ["on", "working"], ["agent"
   const caffeinate = findById(view.render(), "caffeinate");
   assert.ok(caffeinate, `Caffeinate control should render for ${mode}`);
   assert.equal(caffeinate.props.text_color[0], colors[expectedColor]);
-  assert.equal(caffeinate.children[0], "☕︎");
+  assert.equal(caffeinate.children[0].path, "mods/workspace-chrome/pin.svg");
 }
 
-console.log("ok: Caffeinate uses one monochrome coffee glyph with dim Off and working On or Agent colors.");
+console.log("ok: Caffeinate uses one monochrome pin icon with dim Off and working On or Agent colors.");
